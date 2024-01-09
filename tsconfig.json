@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "pages/createElection.js", "pages/createElection.js", "pages/createElection.js", "pages/index.js", "components/addElection/index.js", "pages/updateElections/[electionId].tsx", "pages/createBallot.js", "pages/updateElection.js", "pages/api/admin/insert/deleteUser.js", "pages/createUser.js", "pages/createCandidate.js", "pages/updateUsers/[userId].js", "pages/updateCandidates/[candidateId].js", "pages/updateBallots/[ballotId].js", "pages/adminDashboard.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/ryze1084/public_html/
+    - /bin/cp -R fyp.ryzeandup.com $DEPLOYPATH

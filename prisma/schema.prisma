@@ -1,0 +1,126 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Activity {
+  activity_id          Int       @id @unique(map: "activity_id") @default(autoincrement())
+  username             String    @db.VarChar(45)
+  activity_description String?   @db.VarChar(255)
+  logs_data            String?   @db.VarChar(255)
+  date_created         DateTime? @default(now()) @db.DateTime(0)
+  date_updated         DateTime? @default(now()) @db.DateTime(0)
+
+  @@index([username], map: "Activity_admin_id_FK")
+}
+
+model Admin {
+  admin_id     Int       @id @unique(map: "admin_id") @default(autoincrement())
+  user_id      Int       @unique(map: "user_id")
+  date_created DateTime? @default(now()) @db.DateTime(0)
+  date_updated DateTime? @default(now()) @db.DateTime(0)
+  privilege    Boolean?  @default(true)
+  public_key   String?   @db.LongText
+  User         User      @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "Admin_user_id_FK")
+  Share        Share[]
+
+  @@index([user_id], map: "Admin_user_id_FK")
+}
+
+model Ballot {
+  ballot_id          Int         @id @unique(map: "ballot_id") @default(autoincrement())
+  election_id        Int
+  ballot_title       String      @db.VarChar(45)
+  ballot_description String?     @db.VarChar(255)
+  date_created       DateTime?   @default(now()) @db.DateTime(0)
+  date_updated       DateTime?   @default(now()) @db.DateTime(0)
+  ballot_result      String?     @db.VarChar(255)
+  Election           Election    @relation(fields: [election_id], references: [election_id], onUpdate: Restrict, map: "Ballot_election_id_FK")
+  Candidate          Candidate[]
+  Vote               Vote[]
+
+  @@index([election_id], map: "Ballot_election_id_FK")
+}
+
+model Candidate {
+  candidate_id Int       @id @unique(map: "candidate_id") @default(autoincrement())
+  ballot_id    Int
+  name         String    @db.VarChar(45)
+  description  String?   @db.Text
+  bio          String?   @db.VarChar(255)
+  picture      String    @db.VarChar(255)
+  date_created DateTime? @default(now()) @db.DateTime(0)
+  date_updated DateTime? @default(now()) @db.DateTime(0)
+  Ballot       Ballot    @relation(fields: [ballot_id], references: [ballot_id], onUpdate: Restrict, map: "Candidate_ballot_id_FK")
+
+  @@index([ballot_id], map: "Candidate_ballot_id_FK")
+}
+
+model Election {
+  election_id          Int       @id @unique(map: "election_id") @default(autoincrement())
+  public_key           String?   @db.LongText
+  election_title       String    @unique(map: "election_title") @db.VarChar(255)
+  election_description String?   @db.VarChar(255)
+  start_date           DateTime? @db.DateTime(0)
+  end_date             DateTime? @db.DateTime(0)
+  date_created         DateTime? @default(now()) @db.DateTime(0)
+  date_updated         DateTime? @default(now()) @db.DateTime(0)
+  status               String    @db.VarChar(45)
+  Ballot               Ballot[]
+  Share                Share[]
+  Voter                Voter[]
+}
+
+model User {
+  user_id      Int       @id @unique(map: "user_id") @default(autoincrement())
+  username     String    @unique(map: "username_UNIQUE") @db.VarChar(45)
+  hash         String    @unique(map: "password_hash") @db.VarChar(255)
+  name         String?   @db.VarChar(45)
+  email        String?   @unique(map: "email") @db.VarChar(255)
+  date_created DateTime? @default(now()) @db.DateTime(0)
+  date_updated DateTime? @default(now()) @db.DateTime(0)
+  active       Boolean?  @default(true)
+  Admin        Admin?
+  Voter        Voter[]
+}
+
+model Vote {
+  vote_id   Int    @id @unique(map: "vote_id") @default(autoincrement())
+  ballot_id Int
+  vote_data String @db.LongText
+  Ballot    Ballot @relation(fields: [ballot_id], references: [ballot_id], onDelete: NoAction, onUpdate: NoAction, map: "Vote_ballot_id_FK")
+
+  @@index([ballot_id], map: "Vote_ballot_id_FK_idx")
+}
+
+model Voter {
+  voter_id     Int       @id @unique(map: "voter_id") @default(autoincrement())
+  user_id      Int
+  election_id  Int
+  vote_status  Boolean?  @default(false)
+  date_updated DateTime? @default(now()) @db.DateTime(0)
+  voter_token  String?   @db.VarChar(45)
+  Election     Election  @relation(fields: [election_id], references: [election_id], onUpdate: Restrict, map: "Voter_election_id_FK")
+  User         User      @relation(fields: [user_id], references: [user_id], onUpdate: Restrict, map: "Voter_user_id_FK")
+
+  @@index([election_id], map: "Voter_election_id_FK")
+  @@index([user_id], map: "Voter_user_id_FK")
+}
+
+model Share {
+  share_id     Int       @id @unique(map: "share_id") @default(autoincrement())
+  election_id  Int
+  admin_id     Int
+  encrypted_ss String?   @db.LongText
+  date_created DateTime? @default(now()) @db.DateTime(0)
+  date_updated DateTime? @default(now()) @db.DateTime(0)
+  Admin        Admin     @relation(fields: [admin_id], references: [admin_id], onUpdate: Restrict, map: "Share_admin_id_FK")
+  Election     Election  @relation(fields: [election_id], references: [election_id], onUpdate: Restrict, map: "Share_election_id_FK")
+
+  @@index([election_id], map: "Share_election_id_FK")
+  @@index([admin_id], map: "Share_admin_id_FK")
+}

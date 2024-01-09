@@ -1,0 +1,171 @@
+
+// 'use client';
+// import { fetchEncParam } from "./api/getEncParam";
+// import SEAL from 'node-seal'
+// import axios from "axios";
+// import { fetchVoteData } from '../api/voter/getVoteData';
+// import { fetchVoteById } from "../api/voter/getVoteById";
+// import { fetchPublicKey } from '../api/voter/getPublicKey';
+// export const getServerSideProps= async () => {
+// 	const fetchedSecKey = await fetchPublicKey(3);
+// 	// // const secretKey=fs.readFileSync("seal_private_key.txt", 'utf8')
+// 	const voteData=await fetchVoteById(2)
+// 	// console.log(voteDataList)
+//     const fetchedEncParam=await fetchEncParam(2)
+//     // console.log(fetchedEncParam.encParam)
+//     const encParam=fetchedEncParam.encParam
+  
+// 	return {
+// 	  props: {fetchedSecKey, voteData, encParam }
+// 	};
+//   };
+
+// export const Page=({encParam, voteData, fetchedSecKey}) =>{
+//    console.log(encParam)
+// //    console.log(secretKey)
+// //    console.log(voteDataList)
+// //    console.log(fetchedSecKey)
+// //    var voteDataList=fetchedSecKey.voteDataList[0]
+//    var voteData1=voteData
+//    console.log(fetchedSecKey)
+//    var seckey=fetchedSecKey.public_key
+// //    console.log(typeof(voteData))
+// //    console.log(typeof(seckey))
+
+//     decrypt(voteData1,seckey,encParam)
+// //    decrypt(voteDataList[0].vote_data,fetchedSecKey)
+// //    voteDataList.array.forEach(element => {
+// // 	   console.log(element)
+// //    });
+	
+	
+	
+// 	return (
+// 		<main className="border-2 border-black min-h-[inherit] flex justify-center items-center font-spartan transition-all duration-200 ease-in-out">
+// 			<div className="flex flex-col w-1/12 border-black ">
+// 				<span id="test">TESTING</span>
+// 				<input type="text" id='data' />
+// 				{/* {voteDataList.map((item)=>(<button key={item.vote_id} onClick={()=>decrypt(item.vote_data,fetchedSecKey)}>Click me</button>))} */}
+				
+
+// 				<p id="demo"></p>
+
+				
+// 			</div>
+// 		</main>
+
+// 	);
+
+// 	async function decrypt(voteData, secretKey,fetchedEncParam){
+// 		const seal = await SEAL()
+	
+// 		////////////////////////
+// 		// Encryption Parameters
+// 		////////////////////////
+	
+// 		// Create a new EncryptionParameters
+// 		const schemeType = seal.SchemeType.bfv
+// 		const securityLevel = seal.SecurityLevel.tc128
+// 		const polyModulusDegree = 4096
+// 		const bitSizes = [36, 36, 37]
+// 		const bitSize = 20
+		
+// 		// const encParms = seal.EncryptionParameters(schemeType)
+		
+//         const b64encParam=fetchedEncParam
+//         console.log(b64encParam)
+        
+//         const encParms = seal.EncryptionParameters(schemeType)
+//         encParms.load(b64encParam)
+// 		// // Assign Poly Modulus Degree
+// 		// encParms.setPolyModulusDegree(polyModulusDegree)
+	
+// 		// // Create a suitable set of CoeffModulus primes
+// 		// encParms.setCoeffModulus(
+// 		// 	seal.CoeffModulus.Create(
+// 		// 	polyModulusDegree,
+// 		// 	Int32Array.from(bitSizes)
+// 		// 	)
+// 		// 	)
+			
+// 		// 	// Assign a PlainModulus (only for bfv/bgv scheme type)
+// 		// 	encParms.setPlainModulus(seal.PlainModulus.Batching(polyModulusDegree, bitSize))
+			
+// 		////////////////////////
+// 		// Context
+// 		////////////////////////
+		
+// 		// Create a new Context
+// 		const context = seal.Context(
+// 		encParms,
+// 		true,
+// 		securityLevel
+// 		)
+		
+		
+
+// 		// Helper to check if the Context was created successfully
+// 		if (!context.parametersSet()) {
+// 			throw new Error('Could not set the parameters in the given context. Please try different encryption parameters.')
+// 		}
+		
+// 		////////////////////////
+// 		// Keys
+// 		////////////////////////
+		
+// 		// Create a new KeyGenerator (use uploaded keys if applicable)
+// 		// 
+		
+// 		// const publicKeyObject= fetchedPubKey
+		
+// 		const secretKeyObject= secretKey
+// 		console.log(secretKeyObject)
+// 		const secretKeyString=secretKeyObject.public_key
+
+		
+		
+		
+// 		// console.log(context.ddddddddd[tdoHuman())
+// 		// console.log(secretKeyString)
+// 		const loadedSecretKey=seal.SecretKey()
+// 		loadedSecretKey.load(context,secretKey)
+// 		console.log("Loaded")
+// 		// loadedSecretKey.load(context,secretKeyString)
+// 		// const loadedPublicKey= keyGenerator.createPublicKey().load(context,publicKeyString)
+			
+// 			// // // Create the PlainText(s) 
+// 			// const plaintext = seal.PlainText()
+
+// 			// // // Create the CipherText(s) 
+// 			// const ciphertext = seal.CipherText()
+// 			// ciphertext.load(context,voteData)
+
+// 			// // // Create an Evaluator
+// 			// // const evaluator = seal.Evaluator(context)
+
+// 			// // // Create a BatchEncoder (only bfv/bgv SchemeType)
+// 			// const batchEncoder = seal.BatchEncoder(context)
+
+// 			// //  // Create an Decryptor
+// 			//  const decryptor = seal.Decryptor(
+// 			// 	context,
+// 			// 	loadedSecretKey
+// 			//   )
+// 			// //  // Decrypt the ciphertext to the plaintext
+// 			// decryptor.decrypt(ciphertext, plaintext)
+
+// 			// //   // Encode data to a PlainText
+// 			//   const decodedData=batchEncoder.decode(
+// 			// 	plaintext
+// 			//   )
+			
+// 			// console.log(decodedData)
+
+		  
+// 		  return true
+
+// 	}
+   
+// }
+
+// export default Page;
